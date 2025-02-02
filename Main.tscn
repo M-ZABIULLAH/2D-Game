@@ -1,0 +1,70 @@
+[gd_scene load_steps=9 format=3 uid="uid://m4yns64wgghd"]
+
+[ext_resource type="Script" path="res://Main.cs" id="1_7ri7r"]
+[ext_resource type="PackedScene" uid="uid://dvknthk0424ae" path="res://Player.tscn" id="2_14025"]
+[ext_resource type="PackedScene" uid="uid://b6rxbvsvf0raf" path="res://Mob.tscn" id="2_cnpaw"]
+[ext_resource type="PackedScene" uid="uid://b2b2k8mn3kbrh" path="res://HUD.tscn" id="3_3qbb1"]
+[ext_resource type="Texture2D" uid="uid://dxbpdldlbu0e1" path="res://art/6mRt9c.png" id="7_ttqyt"]
+
+[sub_resource type="Curve2D" id="Curve2D_d5kin"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -32, -5, 0, 0, 0, 0, 1120, -5, 0, 0, 0, 0, 1120, 643, 0, 0, 0, 0, -32, 643, 0, 0, 0, 0, -32, -5)
+}
+point_count = 5
+
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_lcs1w"]
+
+[sub_resource type="AudioStreamMP3" id="AudioStreamMP3_jxtei"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_7ri7r")
+MobScene = ExtResource("2_cnpaw")
+
+[node name="6mRt9c" type="Sprite2D" parent="."]
+position = Vector2(575, 323.25)
+scale = Vector2(1.23871, 1.69685)
+texture = ExtResource("7_ttqyt")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+offset_left = -1.0
+offset_top = 1.0
+offset_right = 1151.0
+offset_bottom = 645.0
+color = Color(0.298039, 0.858824, 0.741176, 0.792157)
+
+[node name="Player" parent="." instance=ExtResource("2_14025")]
+position = Vector2(2, 3)
+
+[node name="MobTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="ScoreTimer" type="Timer" parent="."]
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="StartPosition" type="Marker2D" parent="."]
+position = Vector2(582, 303)
+
+[node name="MobPath" type="Path2D" parent="."]
+position = Vector2(32, 5)
+curve = SubResource("Curve2D_d5kin")
+
+[node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
+position = Vector2(-32, -5)
+
+[node name="HUD" parent="." instance=ExtResource("3_3qbb1")]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamMicrophone_lcs1w")
+volume_db = 0.36
+
+[node name="AudioStreamPlayer2D2" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamMP3_jxtei")
+
+[connection signal="Hit" from="Player" to="." method="game_over"]
+[connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
+[connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
+[connection signal="StartGame" from="HUD" to="." method="new_game"]

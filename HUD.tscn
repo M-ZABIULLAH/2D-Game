@@ -1,0 +1,74 @@
+[gd_scene load_steps=6 format=3 uid="uid://b2b2k8mn3kbrh"]
+
+[ext_resource type="Script" path="res://HUD.cs" id="1_gtff4"]
+[ext_resource type="FontFile" uid="uid://b4jrx8htkf02k" path="res://fonts/Xolonium-Regular.ttf" id="2_tw2en"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_nadnv"]
+font = ExtResource("2_tw2en")
+font_size = 64
+
+[sub_resource type="InputEventAction" id="InputEventAction_u4je8"]
+action = &"start_game"
+
+[sub_resource type="Shortcut" id="Shortcut_bxfb3"]
+events = [SubResource("InputEventAction_u4je8")]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_gtff4")
+
+[node name="ScoreLabel" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -46.0
+offset_right = 46.0
+offset_bottom = 106.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.0471921, 1.92523e-07, 0.786311, 1)
+theme_override_fonts/font = ExtResource("2_tw2en")
+theme_override_font_sizes/font_size = 64
+text = "0"
+label_settings = SubResource("LabelSettings_nadnv")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Message" type="Label" parent="."]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.546
+anchor_right = 0.504
+anchor_bottom = 0.546
+offset_left = -72.0
+offset_top = -11.808
+offset_right = 77.392
+offset_bottom = 11.192
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_tw2en")
+theme_override_font_sizes/font_size = 64
+text = "Simplon Brief Game"
+
+[node name="StartButton" type="Button" parent="."]
+anchors_preset = -1
+anchor_left = 0.514
+anchor_top = 0.83
+anchor_right = 0.514
+anchor_bottom = 0.83
+offset_left = -88.128
+offset_top = -85.84
+offset_right = 88.872
+offset_bottom = 0.159973
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_tw2en")
+theme_override_font_sizes/font_size = 64
+shortcut = SubResource("Shortcut_bxfb3")
+text = "Start"
+
+[node name="MessageTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="StartGame" from="." to="." method="new_game"]
+[connection signal="pressed" from="StartButton" to="." method="OnStartButtonPressed"]
+[connection signal="timeout" from="MessageTimer" to="." method="OnMessageTimerTimeout"]
